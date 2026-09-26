@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TalkFlow — Raio-X de Viabilidade, Escalabilidade & Manifesto Final</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: -0.015em;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.02em;
+    }
+    /* Concentric Double-Bezel Design System Architecture */
+    .bezel-outer {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 1.25rem;
+      padding: 0.35rem;
+      box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.7);
+    }
+    @media (min-width: 640px) {
+      .bezel-outer {
+        border-radius: 1.5rem;
+        padding: 0.375rem;
+      }
+    }
+    .bezel-inner {
+      background: #0b0c10;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: calc(1.25rem - 0.35rem);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.09);
+    }
+    @media (min-width: 640px) {
+      .bezel-inner {
+        border-radius: calc(1.5rem - 0.375rem);
+      }
+    }
+    .bezel-hero-outer {
+      background: radial-gradient(120% 120% at 50% 0%, rgba(6, 182, 212, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      border-radius: 1.5rem;
+      padding: 0.375rem;
+      box-shadow: 0 25px 50px -20px rgba(0, 0, 0, 0.8), 0 0 30px -10px rgba(6, 182, 212, 0.12);
+    }
+    @media (min-width: 640px) {
+      .bezel-hero-outer {
+        border-radius: 2rem;
+        padding: 0.5rem;
+      }
+    }
+    .bezel-hero-inner {
+      background: #08090d;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: calc(1.5rem - 0.375rem);
+      box-shadow: inset 0 1px 2px 0 rgba(255, 255, 255, 0.1);
+    }
+    @media (min-width: 640px) {
+      .bezel-hero-inner {
+        border-radius: calc(2rem - 0.5rem);
+      }
+    }
+    .bg-grid-pattern {
+      background-size: 28px 28px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="bg-[#050608] text-[#f4f4f6] antialiased min-h-screen py-5 px-3 sm:py-8 sm:px-6 bg-grid-pattern selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <div class="max-w-5xl mx-auto space-y-6 sm:space-y-8">
+
+    <!-- TOP BAR: Responsiva para Mobile e Desktop -->
+    <header class="bezel-outer !p-1.5 !rounded-2xl">
+      <div class="bezel-inner !rounded-xl px-4 py-2.5 sm:px-5 sm:py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 flex items-center justify-center font-extrabold text-white text-[11px] sm:text-xs shadow-md shadow-cyan-500/20 shrink-0">
+            TF
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold tracking-tight text-white text-xs sm:text-sm">TALKFLOW</span>
+            <span class="text-[9px] font-mono-code uppercase px-2 py-0.5 rounded-full bg-cyan-950/70 text-cyan-400 border border-cyan-800/50 font-semibold tracking-wider">Raio-X Final</span>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-2 sm:gap-3 text-xs">
+          <span class="text-zinc-400 text-[11px] hidden md:inline">Documento Executivo de Conclusão</span>
+          <a href="pitch_deck_pre_seed.html" class="px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg bg-zinc-800/90 hover:bg-zinc-700 border border-zinc-700/70 text-[10px] sm:text-[11px] font-semibold text-cyan-300 transition flex items-center gap-1">
+            ← <span class="hidden sm:inline">Ver</span> Slides Pitch
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO SECTION: O RAIO-X & A ANALOGIA DO FLIPBOOK -->
+    <section class="bezel-hero-outer">
+      <div class="bezel-hero-inner p-5 sm:p-10 relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-cyan-950/70 border border-cyan-800/40 text-[9px] sm:text-[10px] uppercase font-mono-code font-semibold tracking-[0.2em] text-cyan-400 mb-3 sm:mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+          Engenharia & Dimensionamento Mastigado
+        </div>
+
+        <h1 class="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-3 sm:mb-4 leading-tight">
+          O Raio-X do Processamento: <span class="bg-gradient-to-r from-cyan-400 via-indigo-300 to-fuchsia-400 bg-clip-text text-transparent">Como a Máquina Compila Vídeo</span>
+        </h1>
+
+        <p class="text-xs sm:text-sm md:text-base text-zinc-300 leading-relaxed max-w-3xl mb-5 sm:mb-6">
+          <strong>A Analogia do Flipbook:</strong> O Remotion não usa placa de vídeo 3D como o Premiere. Ele abre um navegador Chromium invisível, tira <strong>1.800 fotos estáticas por minuto de vídeo</strong> (frames) de cada micro-animação das bolhas e costura tudo com o áudio no FFmpeg.
+        </p>
+
+        <!-- 3 Métricas Críticas (Grid Responsivo) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 sm:pt-5 border-t border-zinc-800/80">
+          <div class="p-3 sm:p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
+            <span class="text-[9px] sm:text-[10px] font-mono-code text-cyan-400 uppercase font-semibold block mb-0.5 sm:mb-1">Fator 1 • O Motor</span>
+            <p class="text-xs sm:text-sm font-bold text-white mb-0.5">CPU Multithread (Processador)</p>
+            <p class="text-[10px] sm:text-[11px] text-zinc-400">85% do esforço. Cada núcleo renderiza uma fatia de quadros em paralelo.</p>
+          </div>
+          <div class="p-3 sm:p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
+            <span class="text-[9px] sm:text-[10px] font-mono-code text-indigo-400 uppercase font-semibold block mb-0.5 sm:mb-1">Fator 2 • A Respiração</span>
+            <p class="text-xs sm:text-sm font-bold text-white mb-0.5">Memória RAM (6GB a 16GB)</p>
+            <p class="text-[10px] sm:text-[11px] text-zinc-400">Cada navegador consome ~1.5GB. 16GB permite 2 a 3 vídeos em paralelo.</p>
+          </div>
+          <div class="p-3 sm:p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
+            <span class="text-[9px] sm:text-[10px] font-mono-code text-emerald-400 uppercase font-semibold block mb-0.5 sm:mb-1">Fator 3 • A Economia</span>
+            <p class="text-xs sm:text-sm font-bold text-white mb-0.5">GPU (Placa de Vídeo): R$ 0</p>
+            <p class="text-[10px] sm:text-[11px] text-zinc-400"><strong>Zero dependência de GPU.</strong> Roda em servidores acessíveis sem placas caras.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOCO 1: AS 4 ETAPAS DO PIPELINE E CUSTO UNITÁRIO -->
+    <section class="space-y-4">
+      <div>
+        <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-cyan-950/70 text-cyan-400 border border-cyan-800/50 font-semibold tracking-[0.15em]">Decomposição</span>
+        <h2 class="text-lg sm:text-2xl font-bold text-white mt-1">O Pipeline Quebrado em 4 Etapas: O Que Custa O Quê?</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <!-- Etapa 1 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-4 h-full flex flex-col justify-between border-t-2 border-cyan-400">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-mono-code text-cyan-400 font-bold">ETAPA 01</span>
+                <span class="text-[10px] font-mono-code text-zinc-400 font-semibold">R$ 0,005</span>
+              </div>
+              <h3 class="text-xs sm:text-sm font-bold text-white mb-1.5">Roteiro & Estrutura JSON</h3>
+              <p class="text-[11px] text-zinc-400 mb-2">Geração do diálogo, ganchos de retenção e cálculo de pausas de digitação via LLM.</p>
+            </div>
+            <div class="pt-2 border-t border-zinc-800 text-[10px] text-zinc-500 font-mono-code">
+              Ferramenta: Claude / GPT-4o-mini
+            </div>
+          </div>
+        </div>
+
+        <!-- Etapa 2 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-4 h-full flex flex-col justify-between border-t-2 border-indigo-400">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-mono-code text-indigo-400 font-bold">ETAPA 02</span>
+                <span class="text-[10px] font-mono-code text-zinc-400 font-semibold">R$ 0,00 a R$ 0,03</span>
+              </div>
+              <h3 class="text-xs sm:text-sm font-bold text-white mb-1.5">Síntese de Voz (TTS)</h3>
+              <p class="text-[11px] text-zinc-400 mb-2">Geração das falas em áudio com vozes neurais realistas e sotaques naturais sincronizados.</p>
+            </div>
+            <div class="pt-2 border-t border-zinc-800 text-[10px] text-zinc-500 font-mono-code">
+              Ferramenta: Edge-TTS / OpenAI
+            </div>
+          </div>
+        </div>
+
+        <!-- Etapa 3 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-4 h-full flex flex-col justify-between border-t-2 border-fuchsia-400">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-mono-code text-fuchsia-400 font-bold">ETAPA 03</span>
+                <span class="text-[10px] font-mono-code text-zinc-400 font-semibold">~R$ 0,05 a R$ 0,10</span>
+              </div>
+              <h3 class="text-xs sm:text-sm font-bold text-white mb-1.5">Renderização de Frames</h3>
+              <p class="text-[11px] text-zinc-400 mb-2">Chromium headless fotografando 1.800 quadros com física de mola e bolhas dinâmicas.</p>
+            </div>
+            <div class="pt-2 border-t border-zinc-800 text-[10px] text-zinc-500 font-mono-code">
+              Ferramenta: Remotion + Node.js
+            </div>
+          </div>
+        </div>
+
+        <!-- Etapa 4 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-4 h-full flex flex-col justify-between border-t-2 border-emerald-400">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-mono-code text-emerald-400 font-bold">ETAPA 04</span>
+                <span class="text-[10px] font-mono-code text-zinc-400 font-semibold">R$ 0,001</span>
+              </div>
+              <h3 class="text-xs sm:text-sm font-bold text-white mb-1.5">Encode & Armazenamento</h3>
+              <p class="text-[11px] text-zinc-400 mb-2">Costura final no FFmpeg em MP4 1080p e upload para download imediato.</p>
+            </div>
+            <div class="pt-2 border-t border-zinc-800 text-[10px] text-zinc-500 font-mono-code">
+              Ferramenta: FFmpeg + Cloudflare R2
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumo Custo Final -->
+      <div class="bezel-outer !p-1.5">
+        <div class="bezel-inner px-4 py-3 sm:px-6 sm:py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0"></span>
+            <span class="text-xs sm:text-sm text-zinc-200">
+              <strong>Custo Total de Produção por Vídeo de 60s:</strong> Menos de <strong class="text-emerald-400 text-sm sm:text-base font-mono-code">R$ 0,15 centavos</strong>.
+            </span>
+          </div>
+          <span class="text-[11px] font-mono-code text-zinc-400 bg-zinc-900 border border-zinc-800 px-3 py-1 rounded-full">
+            Margem Bruta Operacional: &gt; 85%
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOCO 2: ESCALABILIDADE DOS PLANOS (TABELA DE THROUGHPUT) -->
+    <section class="space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+        <div>
+          <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-indigo-950/70 text-indigo-400 border border-indigo-800/50 font-semibold tracking-[0.15em]">Throughput & Capacidade</span>
+          <h2 class="text-lg sm:text-2xl font-bold text-white mt-1">Comparativo de Escalabilidade dos Planos</h2>
+        </div>
+        <p class="text-xs text-zinc-400 font-mono-code">Valores baseados em vídeos verticais 1080x1920 @ 30fps</p>
+      </div>
+
+      <!-- Tabela com Scroll Horizontal Seguro no Mobile -->
+      <div class="bezel-outer">
+        <div class="bezel-inner p-1 overflow-x-auto">
+          <table class="w-full text-left text-xs min-w-[620px]">
+            <thead class="bg-zinc-900/90 text-zinc-400 font-mono-code text-[10px] uppercase border-b border-zinc-800">
+              <tr>
+                <th class="p-3">Configuração / Plano</th>
+                <th class="p-3">Preço / Mês</th>
+                <th class="p-3">Frames / Minuto</th>
+                <th class="p-3">Tempo p/ Vídeo 60s</th>
+                <th class="p-3">Capacidade / Dia</th>
+                <th class="p-3">Concorrência</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-800/60 font-mono-code text-[11px] text-zinc-300">
+              <tr class="hover:bg-zinc-900/40 transition">
+                <td class="p-3 font-bold text-white font-sans">
+                  0. PC Local dos Sócios (Ryzen/Intel)
+                  <span class="block text-[10px] text-zinc-500 font-mono-code">Notebooks locais</span>
+                </td>
+                <td class="p-3 text-emerald-400 font-bold">R$ 0</td>
+                <td class="p-3">~1.500 fps/min</td>
+                <td class="p-3">~60 a 75s</td>
+                <td class="p-3">30 a 50 vídeos</td>
+                <td class="p-3 text-zinc-400">1 (uso isolado)</td>
+              </tr>
+              <tr class="hover:bg-zinc-900/40 transition">
+                <td class="p-3 font-bold text-cyan-300 font-sans">
+                  1. Integrator VPS Start (4 vCPU / 6GB)
+                  <span class="block text-[10px] text-zinc-500 font-mono-code">AMD EPYC + 100GB NVMe</span>
+                </td>
+                <td class="p-3 text-white font-bold">R$ 29,90</td>
+                <td class="p-3">~1.200 fps/min</td>
+                <td class="p-3">~90s</td>
+                <td class="p-3">~400 vídeos</td>
+                <td class="p-3 text-zinc-400">Fila serial (1 por vez)</td>
+              </tr>
+              <tr class="bg-cyan-950/20 hover:bg-cyan-950/30 transition border-l-2 border-cyan-400">
+                <td class="p-3 font-bold text-white font-sans">
+                  2. Integrator VPS POWER (6 vCPU / 16GB) ★
+                  <span class="block text-[10px] text-cyan-400 font-mono-code">Recomendada p/ os 3 Sócios</span>
+                </td>
+                <td class="p-3 text-cyan-400 font-bold">R$ 89,00</td>
+                <td class="p-3 font-bold text-white">~2.400 fps/min</td>
+                <td class="p-3 text-cyan-300 font-bold">~45s</td>
+                <td class="p-3 text-white font-bold">~1.500 vídeos</td>
+                <td class="p-3 text-emerald-400 font-bold">2 renders paralelos</td>
+              </tr>
+              <tr class="hover:bg-zinc-900/40 transition">
+                <td class="p-3 font-bold text-white font-sans">
+                  3. Integrator Turbo (8 vCPU / 24GB)
+                  <span class="block text-[10px] text-zinc-500 font-mono-code">Alta concorrência</span>
+                </td>
+                <td class="p-3 text-white font-bold">~R$ 149,00</td>
+                <td class="p-3">~3.600 fps/min</td>
+                <td class="p-3 text-zinc-200">~30s (Tempo real!)</td>
+                <td class="p-3">~2.800 vídeos</td>
+                <td class="p-3 text-emerald-400">3 a 4 paralelos</td>
+              </tr>
+              <tr class="hover:bg-zinc-900/40 transition">
+                <td class="p-3 font-bold text-white font-sans">
+                  4. Remotion Lambda (AWS Serverless)
+                  <span class="block text-[10px] text-zinc-500 font-mono-code">Escala Global B2C</span>
+                </td>
+                <td class="p-3 text-fuchsia-400 font-bold">~$0,02 / render</td>
+                <td class="p-3 text-fuchsia-300">Escala Infinita</td>
+                <td class="p-3 text-fuchsia-400 font-bold">12s a 18s</td>
+                <td class="p-3">Ilimitado</td>
+                <td class="p-3 text-fuchsia-400 font-bold">100+ simultâneos</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOCO 3: SIMULADOR INTERATIVO -->
+    <section class="bezel-outer">
+      <div class="bezel-inner p-5 sm:p-7">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-5 pb-3 border-b border-zinc-800">
+          <div>
+            <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-cyan-950/70 text-cyan-400 border border-cyan-800/50 font-semibold tracking-[0.15em]">Calculadora de Viabilidade</span>
+            <h3 class="text-base sm:text-lg font-bold text-white mt-1">Simule o Volume da Operação</h3>
+          </div>
+          <span class="text-[11px] font-mono-code text-zinc-400">Baseado no Plano Integrator Power (R$ 89/m)</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-zinc-300">Vídeos Gerados por Dia:</span>
+                <span id="sliderVideosVal" class="text-cyan-400 font-bold font-mono-code">20 vídeos</span>
+              </div>
+              <input id="sliderVideos" type="range" min="5" max="150" value="20" class="w-full accent-cyan-400 bg-zinc-800 h-1.5 rounded-lg cursor-pointer">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-zinc-300">Duração Média do Vídeo:</span>
+                <span id="sliderDurationVal" class="text-indigo-400 font-bold font-mono-code">45 segundos</span>
+              </div>
+              <input id="sliderDuration" type="range" min="15" max="90" step="15" value="45" class="w-full accent-indigo-400 bg-zinc-800 h-1.5 rounded-lg cursor-pointer">
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between">
+            <div>
+              <span class="text-[9px] font-mono-code text-zinc-500 uppercase block mb-0.5">Tempo Total de Render / Dia</span>
+              <p id="calcTotalTime" class="text-xl sm:text-2xl font-extrabold text-white font-mono-code">15 min</p>
+              <p class="text-[10px] text-zinc-400 mt-0.5">A máquina fica 23h45 ociosa</p>
+            </div>
+            <div class="text-[10px] text-emerald-400 font-mono-code pt-2 border-t border-zinc-800">
+              ✓ Carga leve: 98% de folga térmica
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between">
+            <div>
+              <span class="text-[9px] font-mono-code text-zinc-500 uppercase block mb-0.5">Custo Real por Vídeo</span>
+              <p id="calcCostPerVideo" class="text-xl sm:text-2xl font-extrabold text-cyan-400 font-mono-code">R$ 0,15</p>
+              <p class="text-[10px] text-zinc-400 mt-0.5">Fixo: R$ 89,00 / 600 vídeos no mês</p>
+            </div>
+            <div class="text-[10px] text-zinc-400 font-mono-code pt-2 border-t border-zinc-800">
+              Economia vs. After Effects: <strong class="text-white">99%</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOCO 4: O MANIFESTO FINAL DO PROJETO (TEXTO ANTI-DISSOLUÇÃO) -->
+    <section class="bezel-hero-outer">
+      <div class="bezel-hero-inner p-6 sm:p-10 space-y-6">
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-800/80">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-800/50 text-[10px] font-mono-code text-emerald-400 uppercase font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              Alinhamento Definitivo dos Sócios
+            </div>
+            <h2 class="text-xl sm:text-3xl font-extrabold text-white mt-1.5 tracking-tight">O Manifesto TalkFlow: O Que Fica na Pedra</h2>
+          </div>
+
+          <button id="copyManifestBtn" class="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-semibold text-zinc-200 transition flex items-center gap-2 self-start sm:self-auto shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copiar Resumo para IA
+          </button>
+        </div>
+
+        <!-- O Texto de Conclusão Sintetizado do MD Original -->
+        <div class="prose prose-invert max-w-none text-xs sm:text-sm text-zinc-300 space-y-4 leading-relaxed">
+          <p>
+            Para que este projeto não se perca em reuniões infinitas ou retrabalho de planejamento, consolidamos aqui as decisões e os pilares inegociáveis baseados no documento original de vocês:
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div class="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2">
+              <strong class="text-white text-xs sm:text-sm block text-cyan-300">1. A Tese Central</strong>
+              <p class="text-[11px] sm:text-xs text-zinc-300">
+                Não somos apenas um app de vídeos de TikTok. Somos os donos do <strong>motor de movimento (Core Motion Engine)</strong>. O mesmo motor gera vídeos verticais para canais virais hoje, e alimenta componentes de landing pages e onboarding de apps amanhã.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2">
+              <strong class="text-white text-xs sm:text-sm block text-emerald-300">2. A Estratégia de Dinheiro</strong>
+              <p class="text-[11px] sm:text-xs text-zinc-300">
+                <strong>Sem queima prematura de caixa.</strong> Mês 1 é focado em <em>Mídia Própria & Venda de Criativos</em> (gerar receita imediata e validar retenção). O SaaS aberto ao público com cobrança em dólar só entra na Fase 2, quando a ferramenta já tiver milhões de visualizações comprovadas.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2">
+              <strong class="text-white text-xs sm:text-sm block text-indigo-300">3. A Máquina de Processamento</strong>
+              <p class="text-[11px] sm:text-xs text-zinc-300">
+                <strong>Sem computadores caros ou nuvem complexa.</strong> Dias 1 a 7 no PC local (R$ 0). Do Dia 8 em diante, subimos a <strong>VPS Linux Power da Integrator Host (R$ 89,00/mês)</strong> com AMD EPYC e 16GB RAM, permitindo que os 3 sócios disparem vídeos juntos pagando em Pix.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2">
+              <strong class="text-white text-xs sm:text-sm block text-fuchsia-300">4. O Tripé dos Sócios</strong>
+              <p class="text-[11px] sm:text-xs text-zinc-300">
+                <strong>Sócio A:</strong> Guardião do Remotion e física de mola (qualidade estética).<br>
+                <strong>Sócio B:</strong> Pipeline de backend, fila BullMQ e VPS (estabilidade técnica).<br>
+                <strong>Sócio C:</strong> Roteiros, ganchos virais e monetização (faturamento).
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-gradient-to-r from-cyan-950/60 to-indigo-950/60 border border-cyan-800/40 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+            <div>
+              <strong class="text-white text-sm block">O Marco Inegociável dos Próximos 7 Dias:</strong>
+              <span class="text-xs text-zinc-300">Compilar 1 único vídeo de 30 segundos no Remotion com áudio e física de mola perfeita. Se esse vídeo for bom, o negócio existe.</span>
+            </div>
+            <a href="pitch_deck_pre_seed.html" class="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition shadow-md shadow-cyan-600/20 shrink-0">
+              Ir para Votação de Decisões →
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- SCRIPT CALCULADORA E COPY -->
+  <script>
+    const sliderVideos = document.getElementById('sliderVideos');
+    const sliderDuration = document.getElementById('sliderDuration');
+    const sliderVideosVal = document.getElementById('sliderVideosVal');
+    const sliderDurationVal = document.getElementById('sliderDurationVal');
+    const calcTotalTime = document.getElementById('calcTotalTime');
+    const calcCostPerVideo = document.getElementById('calcCostPerVideo');
+
+    function updateCalc() {
+      const videos = parseInt(sliderVideos.value, 10);
+      const duration = parseInt(sliderDuration.value, 10);
+
+      sliderVideosVal.textContent = `${videos} vídeos`;
+      sliderDurationVal.textContent = `${duration} segundos`;
+
+      // Na Integrator Power (6 vCPU EPYC), tempo de render é cerca de 0.75x a duração do vídeo
+      const totalSeconds = videos * duration * 0.75;
+      const totalMinutes = Math.round(totalSeconds / 60);
+
+      calcTotalTime.textContent = totalMinutes < 60 ? `${totalMinutes} min` : `${(totalMinutes / 60).toFixed(1)} horas`;
+
+      const monthlyVPS = 89.00;
+      const totalMonthlyVideos = videos * 30;
+      const vpsCostPerVideo = monthlyVPS / totalMonthlyVideos;
+      const aiCost = 0.015; // LLM + TTS
+      const totalUnitCost = vpsCostPerVideo + aiCost;
+
+      calcCostPerVideo.textContent = `R$ ${totalUnitCost.toFixed(2).replace('.', ',')}`;
+    }
+
+    sliderVideos.addEventListener('input', updateCalc);
+    sliderDuration.addEventListener('input', updateCalc);
+    updateCalc();
+
+    // Copiar Manifesto para IA
+    document.getElementById('copyManifestBtn').addEventListener('click', () => {
+      const text = `# MANIFESTO EXECUTIVO: PROJETO TALKFLOW
+- Tese: Não criamos vídeos de fake chat, criamos o Core Motion Engine para múltiplos formatos.
+- Estrutura: 
+  * Etapa 1: Roteiro IA (R$ 0,005)
+  * Etapa 2: Voz Neural TTS (R$ 0,00 a R$ 0,03)
+  * Etapa 3: Remotion Headless Chromium 1.800 frames (R$ 0,05)
+  * Etapa 4: FFmpeg Encode + Cloudflare R2 (R$ 0,001)
+- Custo Unitário Final: ~R$ 0,15 centavos por vídeo de 60s.
+- Infraestrutura Escolhida: 
+  * Semana 1: PC Local (R$ 0)
+  * Operação: VPS Linux Integrator Power (6 vCPUs AMD EPYC, 16GB RAM, 200GB NVMe) por R$ 89,00/mês.
+- Modelo de Negócio: Mês 1 em Mídia Própria e Venda de Criativos (Caixa rápido); Mês 2 em diante SaaS por créditos.
+- Divisão dos Sócios: Sócio A (Motion/Remotion), Sócio B (Infra/Pipeline), Sócio C (Conteúdo/Monetização).
+- Sprint Atual: 7 dias para o primeiro vídeo perfeito de 30s.`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyManifestBtn');
+        const oldHtml = btn.innerHTML;
+        btn.innerHTML = '✓ Copiado com Sucesso!';
+        btn.classList.add('bg-emerald-800', 'text-emerald-200');
+        setTimeout(() => {
+          btn.innerHTML = oldHtml;
+          btn.classList.remove('bg-emerald-800', 'text-emerald-200');
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>

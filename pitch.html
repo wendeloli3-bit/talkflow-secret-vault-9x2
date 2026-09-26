@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seed Pitch: TalkFlow — Conversational Motion Engine</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: -0.015em;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.02em;
+    }
+    .slide {
+      display: none;
+      opacity: 0;
+      transform: translateY(16px) scale(0.99);
+      transition: opacity 0.4s var(--ease-fluid), transform 0.4s var(--ease-fluid);
+    }
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    /* Double-Bezel / Concentric Nested Architecture */
+    .bezel-outer {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1.5rem; /* 24px */
+      padding: 0.375rem; /* 6px */
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+    }
+    .bezel-inner {
+      background: #0d0e12;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: calc(1.5rem - 0.375rem); /* Concentric 18px */
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .bezel-hero-outer {
+      background: radial-gradient(120% 120% at 50% 0%, rgba(6, 182, 212, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      border-radius: 2rem;
+      padding: 0.5rem;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(6, 182, 212, 0.15);
+    }
+    .bezel-hero-inner {
+      background: #090a0f;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: calc(2rem - 0.5rem);
+      box-shadow: inset 0 1px 2px 0 rgba(255, 255, 255, 0.12);
+    }
+    /* Noise texture */
+    .bg-grid-pattern {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="bg-[#050608] text-[#f4f4f6] antialiased min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200 bg-grid-pattern">
+
+  <!-- TOP BAR: Detached Floating Island Header -->
+  <header class="w-full max-w-5xl mx-auto px-4 pt-5 pb-2">
+    <div class="bezel-outer !p-1.5 !rounded-2xl">
+      <div class="bezel-inner !rounded-xl px-5 py-3 flex items-center justify-between">
+        
+        <!-- Brand & Tag -->
+        <div class="flex items-center gap-3.5">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 flex items-center justify-center font-extrabold text-white text-xs shadow-md shadow-cyan-500/20">
+            TF
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="font-bold tracking-tight text-white text-sm">TALKFLOW</span>
+            <span class="text-[9px] font-mono-code uppercase px-2 py-0.5 rounded-full bg-cyan-950/70 text-cyan-400 border border-cyan-800/50 font-semibold tracking-wider">Pre-Seed</span>
+          </div>
+        </div>
+
+        <!-- Center Slide Title Pill -->
+        <div class="hidden md:flex items-center gap-2 text-xs text-zinc-400">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+          <span id="slideLabelTop" class="font-medium text-zinc-300">01 • Visão & Tese Central</span>
+        </div>
+
+        <!-- Actions & Slide Counter -->
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1.5 bg-zinc-900/90 border border-zinc-800 px-3 py-1 rounded-full text-xs font-mono-code text-zinc-300">
+            <span id="currentSlideNum" class="text-cyan-400 font-bold">1</span>
+            <span class="text-zinc-600">/</span>
+            <span id="totalSlidesNum">9</span>
+          </div>
+
+          <button id="toggleFullscreen" class="p-1.5 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200 transition" title="Tela Cheia">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+            </svg>
+          </button>
+
+          <button id="copyPromptBtn" class="px-2.5 py-1 rounded-lg bg-zinc-800/80 hover:bg-zinc-700/80 border border-zinc-700/70 text-[11px] font-medium text-zinc-300 transition flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Prompt OpenDesign
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- MACRO PROGRESS LINE -->
+  <div class="w-full max-w-5xl mx-auto px-4 mt-2">
+    <div class="w-full h-[3px] bg-zinc-900 rounded-full overflow-hidden">
+      <div id="progressBar" class="h-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-fuchsia-500 transition-all duration-300 w-[11.11%]"></div>
+    </div>
+  </div>
+
+  <!-- SLIDES VIEWPORT: Strict 8pt Spatial Rhythm -->
+  <main class="w-full max-w-5xl mx-auto px-4 py-6 flex-1 flex flex-col justify-center">
+
+    <!-- SLIDE 1: A Capa (The Vision) -->
+    <section class="slide active flex-col justify-center min-h-[auto] sm:min-h-[480px]" data-slide="1" data-label="01 • Visão & Tese Central">
+      <div class="bezel-hero-outer">
+        <div class="bezel-hero-inner p-8 sm:p-12 relative overflow-hidden">
+          <div class="absolute -right-24 -top-24 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-24 -bottom-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Eyebrow Badge -->
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/40 text-[10px] uppercase font-mono-code font-semibold tracking-[0.2em] text-cyan-400 mb-6">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Tese de Fundação & Estratégia
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-5 leading-[1.15]">
+            TalkFlow: O Motor de Animação Conversacional de <span class="bg-gradient-to-r from-cyan-400 via-indigo-300 to-fuchsia-400 bg-clip-text text-transparent">Alta Fidelidade</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-zinc-300 max-w-2xl mb-10 leading-relaxed font-normal">
+            Não estamos construindo apenas mais um gerador de vídeos para redes. Estamos construindo a <strong class="text-white font-semibold">infraestrutura definitiva de storytelling em diálogos</strong> — um único motor que alimenta vídeos verticais, landing pages interativas e produtos digitais.
+          </p>
+
+          <!-- 3-Pillar Optical Alignment Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-zinc-800/80">
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-cyan-400 font-bold font-mono-code text-xs">01</div>
+              <div>
+                <p class="text-[11px] text-zinc-500 font-mono-code">Ativo Central</p>
+                <p class="text-xs font-semibold text-zinc-100">O Motor (Core Motion)</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-indigo-400 font-bold font-mono-code text-xs">02</div>
+              <div>
+                <p class="text-[11px] text-zinc-500 font-mono-code">Ponta de Lança</p>
+                <p class="text-xs font-semibold text-zinc-100">Vídeos & Canais Dark</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-fuchsia-400 font-bold font-mono-code text-xs">03</div>
+              <div>
+                <p class="text-[11px] text-zinc-500 font-mono-code">Escala de Longo Prazo</p>
+                <p class="text-xs font-semibold text-zinc-100">SaaS Global em Dólar</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: O Problema Real (The Uncanny Valley) -->
+    <section class="slide flex-col justify-center min-h-[auto] sm:min-h-[480px]" data-slide="2" data-label="02 • A Dor de Mercado">
+      <div class="mb-5">
+        <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-red-950/70 text-red-400 border border-red-800/50 font-semibold tracking-[0.15em]">01. O Problema</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">O "Uncanny Valley" das conversas digitais</h2>
+        <p class="text-zinc-400 text-xs sm:text-sm mt-1">Se a conversa soa ou parece falsa, a retenção do público desaba nos primeiros 2 segundos.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Coluna Dor do Mercado -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-6 h-full flex flex-col justify-between border-l-2 border-red-500/80">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono-code uppercase font-semibold bg-red-950 text-red-300 border border-red-800/60">Cenário Atual</span>
+                <span class="text-xs text-zinc-500 font-mono-code">Baixa Retenção</span>
+              </div>
+              <h3 class="text-base font-bold text-white mb-3">Ferramentas Amadoras & Rígidas</h3>
+              <ul class="space-y-3 text-xs text-zinc-300">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-red-400 font-bold">✕</span>
+                  <span><strong>Timing Robótico:</strong> Bolhas entram com tempos idênticos, quebrando o ritmo orgânico de leitura do espectador.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-red-400 font-bold">✕</span>
+                  <span><strong>Sem Sensação Tátil:</strong> Ausência de cliques de teclado, sons de envio e hesitações humanas na digitação.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-red-400 font-bold">✕</span>
+                  <span><strong>Processo Artesanal:</strong> Criadores passam de 40 a 80 minutos por vídeo no CapCut para montar algo razoável.</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-6 pt-3 border-t border-zinc-800/80 text-[11px] text-zinc-400 font-mono-code">
+              Gargalo: Criadores desistem por exaustão ou baixo alcance.
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Dor Comercial -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-6 h-full flex flex-col justify-between border-l-2 border-amber-500/80">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono-code uppercase font-semibold bg-amber-950 text-amber-300 border border-amber-800/60">Oportunidade Comercial</span>
+                <span class="text-xs text-zinc-500 font-mono-code">Valor Desperdiçado</span>
+              </div>
+              <h3 class="text-base font-bold text-white mb-3">Custo Alto & Zero Flexibilidade</h3>
+              <ul class="space-y-3 text-xs text-zinc-300">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-amber-400 font-bold">!</span>
+                  <span><strong>Marcas pagam caro:</strong> Agências cobram R$ 500 a R$ 1.500 por pacotes simples de anúncios com conversas de WhatsApp.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-amber-400 font-bold">!</span>
+                  <span><strong>Zero Integração Web:</strong> Desenvolvedores e designers não têm componentes leves de chat para enriquecer landing pages.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-amber-400 font-bold">!</span>
+                  <span><strong>Incapacidade de Escalar:</strong> Sem automação programática, é impossível testar 30 ganchos de diálogo por dia.</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-6 pt-3 border-t border-zinc-800/80 text-[11px] text-amber-400/90 font-mono-code">
+              Nossa Tese: Quem dominar a física e a naturalidade vence o jogo.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: A Solução (The Engine First) -->
+    <section class="slide flex-col justify-center min-h-[auto] sm:min-h-[480px]" data-slide="3" data-label="03 • Arquitetura do Produto">
+      <div class="mb-5">
+        <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-cyan-950/70 text-cyan-400 border border-cyan-800/50 font-semibold tracking-[0.15em]">02. A Solução</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Um Único Motor. Múltiplos Formatos.</h2>
+        <p class="text-zinc-400 text-xs sm:text-sm mt-1">Desenvolvemos o motor de movimento uma única vez. As superfícies de monetização se conectam nele.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Pilar 1 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-5 h-full flex flex-col justify-between border-t-2 border-cyan-400">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="w-7 h-7 rounded-lg bg-cyan-950/80 text-cyan-400 border border-cyan-800/60 flex items-center justify-center font-bold font-mono-code text-xs">01</span>
+                <span class="text-[10px] font-mono-code text-cyan-400">Core Engine</span>
+              </div>
+              <h3 class="text-sm font-bold text-white mb-1.5">O Motor Central</h3>
+              <p class="text-[11px] text-zinc-400 mb-3">React + Remotion + Framer Motion</p>
+              <ul class="text-[11px] text-zinc-300 space-y-2">
+                <li>• <strong>Spring Physics:</strong> Elasticidade real igual ao iOS e WhatsApp nativos.</li>
+                <li>• <strong>Timing Humano:</strong> Duração baseada na extensão das palavras + pausas.</li>
+                <li>• <strong>Áudio Tátil:</strong> Cliques sincronizados e efeitos de bip de envio.</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-zinc-800/80 text-[10px] text-cyan-400 font-mono-code">Ativo de IP Próprio</div>
+          </div>
+        </div>
+
+        <!-- Pilar 2 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-5 h-full flex flex-col justify-between border-t-2 border-indigo-400">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="w-7 h-7 rounded-lg bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center font-bold font-mono-code text-xs">02</span>
+                <span class="text-[10px] font-mono-code text-indigo-400">Mídia Vertical</span>
+              </div>
+              <h3 class="text-sm font-bold text-white mb-1.5">Vídeos & Shorts</h3>
+              <p class="text-[11px] text-zinc-400 mb-3">Pipeline Programático MP4</p>
+              <ul class="text-[11px] text-zinc-300 space-y-2">
+                <li>• <strong>Render 9:16:</strong> Resolução 1080x1920 a 60fps para TikTok e Reels.</li>
+                <li>• <strong>Vozes Neurais (TTS):</strong> Dublagem de múltiplos personagens automatizada.</li>
+                <li>• <strong>Fundo Dinâmico:</strong> Gameplays, vídeos estéticos e trilha em camadas.</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-zinc-800/80 text-[10px] text-indigo-400 font-mono-code">Caixa Rápido</div>
+          </div>
+        </div>
+
+        <!-- Pilar 3 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-5 h-full flex flex-col justify-between border-t-2 border-emerald-400">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="w-7 h-7 rounded-lg bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 flex items-center justify-center font-bold font-mono-code text-xs">03</span>
+                <span class="text-[10px] font-mono-code text-emerald-400">Web Component</span>
+              </div>
+              <h3 class="text-sm font-bold text-white mb-1.5">Embeds & SDK Web</h3>
+              <p class="text-[11px] text-zinc-400 mb-3">Componente Interativo Leve</p>
+              <ul class="text-[11px] text-zinc-300 space-y-2">
+                <li>• <strong>Custo Zero de Servidor:</strong> Renderização direta no navegador via Canvas.</li>
+                <li>• <strong>Onboarding Interativo:</strong> Demonstrações de produto dinâmicas em apps.</li>
+                <li>• <strong>Landing Pages Vivas:</strong> Diálogos reais que aumentam conversão.</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-zinc-800/80 text-[10px] text-emerald-400 font-mono-code">Escala Global</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Por que Agora? (The "Why Now") -->
+    <section class="slide flex-col justify-center min-h-[auto] sm:min-h-[480px]" data-slide="4" data-label="04 • Oportunidade de Mercado">
+      <div class="mb-5">
+        <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-fuchsia-950/70 text-fuchsia-400 border border-fuchsia-800/50 font-semibold tracking-[0.15em]">03. Por Que Agora?</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">O Encontro de 3 Ondas Tecnológicas</h2>
+        <p class="text-zinc-400 text-xs sm:text-sm mt-1">A tecnologia necessária para baratear a produção atingiu maturidade neste ano.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bezel-outer">
+          <div class="bezel-inner p-6 h-full flex flex-col justify-between">
+            <div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-cyan-400 mb-2 font-mono-code">3.4x</div>
+              <h3 class="text-sm font-bold text-white mb-2">Retenção de Diálogos</h3>
+              <p class="text-xs text-zinc-300 leading-relaxed">
+                Text stories superam com folga vídeos estáticos no TikTok e Reels. A curiosidade psicológica de "o que a outra pessoa vai responder" mantém o usuário preso até o final.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-zinc-800/80 text-[10px] text-zinc-500 font-mono-code">Comportamento de Consumo</div>
+          </div>
+        </div>
+
+        <div class="bezel-outer">
+          <div class="bezel-inner p-6 h-full flex flex-col justify-between">
+            <div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-indigo-400 mb-2 font-mono-code">$0,001</div>
+              <h3 class="text-sm font-bold text-white mb-2">Vozes Neurais Baratas</h3>
+              <p class="text-xs text-zinc-300 leading-relaxed">
+                APIs modernas como Edge-TTS (gratuito) e OpenAI Audio tornaram o custo de gerar vozes realistas com sotaques locais uma fração irrelevante de centavos.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-zinc-800/80 text-[10px] text-zinc-500 font-mono-code">Barateamento de Áudio</div>
+          </div>
+        </div>
+
+        <div class="bezel-outer">
+          <div class="bezel-inner p-6 h-full flex flex-col justify-between">
+            <div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-fuchsia-400 mb-2 font-mono-code">Remotion</div>
+              <h3 class="text-sm font-bold text-white mb-2">Vídeo como Código</h3>
+              <p class="text-xs text-zinc-300 leading-relaxed">
+                Remotion atingiu maturidade para compilar frames de vídeo através de código React puro. O que antes exigia After Effects manual agora roda via terminal em 45 segundos.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-zinc-800/80 text-[10px] text-zinc-500 font-mono-code">Engenharia Programática</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Modelo de Negócio & Monetização -->
+    <section class="slide flex-col justify-center min-h-[auto] sm:min-h-[480px]" data-slide="5" data-label="05 • Modelo de Negócio">
+      <div class="mb-5">
+        <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-emerald-950/70 text-emerald-400 border border-emerald-800/50 font-semibold tracking-[0.15em]">04. Monetização</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Duas Vias de Lucro: Caixa Imediato e Escala</h2>
+        <p class="text-zinc-400 text-xs sm:text-sm mt-1">Estratégia sem queima prematura de caixa: geramos receita antes de abrir software para terceiros.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Via 1: Mídia Própria -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-6 h-full flex flex-col justify-between border-t-2 border-emerald-500">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold font-mono-code bg-emerald-950 text-emerald-300 border border-emerald-800/60 uppercase">VIA 1 • CURTO PRAZO</span>
+                <span class="text-xs text-emerald-400 font-mono-code font-semibold">Caixa Rápido</span>
+              </div>
+              <h3 class="text-base font-bold text-white mb-2">Operação de Mídia Própria & Criativos</h3>
+              <ul class="text-xs text-zinc-300 space-y-2.5 mb-4">
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-bold">✓</span>
+                  <span><strong>Canais Dark Virais:</strong> Publicação em 3 canais próprios (TikTok/Shorts) monetizando via AdSense e infoprodutos.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-bold">✓</span>
+                  <span><strong>Pacotes de Anúncios Conversacionais:</strong> Venda de criativos de alta conversão para marcas e dropshipping (R$ 300 a R$ 800/pacote).</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-bold">✓</span>
+                  <span><strong>Zero Risco de Atendimento:</strong> Sem painel de usuário complexo nem dores de suporte.</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 font-mono-code">
+              Meta Mês 1: R$ 3.000 a R$ 7.000 de lucro operacional limpo.
+            </div>
+          </div>
+        </div>
+
+        <!-- Via 2: SaaS Comercial -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-6 h-full flex flex-col justify-between border-t-2 border-cyan-500">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold font-mono-code bg-cyan-950 text-cyan-300 border border-cyan-800/60 uppercase">VIA 2 • MÉDIO/LONGO PRAZO</span>
+                <span class="text-xs text-cyan-400 font-mono-code font-semibold">MRR em Dólar</span>
+              </div>
+              <h3 class="text-base font-bold text-white mb-2">SaaS Comercial Global por Assinatura</h3>
+              <ul class="text-xs text-zinc-300 space-y-2.5 mb-4">
+                <li class="flex items-start gap-2">
+                  <span class="text-cyan-400 font-bold">✓</span>
+                  <span><strong>Starter ($15/mês):</strong> 30 exportações em HD + templates básicos para criadores solo.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-cyan-400 font-bold">✓</span>
+                  <span><strong>Pro ($39/mês):</strong> 120 exportações + vozes ultra-realistas + exportação web.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-cyan-400 font-bold">✓</span>
+                  <span><strong>Créditos Blindados:</strong> Sem "ilimitado falso" para proteger o custo de render e assegurar margem bruta acima de 80%.</span>
+                </li>
+              </ul>
+            </div>
+            <div class="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 font-mono-code">
+              Meta Mês 6: 150 assinantes = $3.500+ USD de MRR previsível.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Arquitetura Técnica & Custos Reais -->
+    <section class="slide flex-col justify-center min-h-[auto] sm:min-h-[480px]" data-slide="6" data-label="06 • Infraestrutura & Custos">
+      <div class="mb-5">
+        <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-indigo-950/70 text-indigo-400 border border-indigo-800/50 font-semibold tracking-[0.15em]">05. Arquitetura & Custos</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Engenharia Enxuta: Sem Queima de Nuvem</h2>
+        <p class="text-zinc-400 text-xs sm:text-sm mt-1">Como manter os custos de computação previsíveis e quase nulos no começo.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="bezel-outer">
+          <div class="bezel-inner p-6 h-full flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                Stack Tecnológica Escolhida
+              </h3>
+              <div class="space-y-2.5 text-xs">
+                <div class="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800">
+                  <span class="text-cyan-400 font-mono-code font-bold">Frontend / Engine:</span> Next.js + Remotion + Framer Motion.
+                </div>
+                <div class="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800">
+                  <span class="text-indigo-400 font-mono-code font-bold">Fila de Processamento:</span> Node.js + Redis (BullMQ).
+                </div>
+                <div class="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800">
+                  <span class="text-fuchsia-400 font-mono-code font-bold">Armazenamento:</span> Cloudflare R2 (Egress zero / sem taxa de saída).
+                </div>
+                <div class="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800">
+                  <span class="text-emerald-400 font-mono-code font-bold">Voz & Efeitos:</span> Edge-TTS (R$ 0) + OpenAI Audio ($0,015/1k chars).
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-zinc-800 text-[10px] text-zinc-500 font-mono-code">
+              Arquitetura modular desacoplada.
+            </div>
+          </div>
+        </div>
+
+        <div class="bezel-outer">
+          <div class="bezel-inner p-6 h-full flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                Cenários de Infraestrutura Física
+              </h3>
+              <div class="space-y-3 text-xs text-zinc-300">
+                <div class="border-b border-zinc-800 pb-2.5">
+                  <div class="flex justify-between font-semibold text-white">
+                    <span>1. PC Local dos Sócios</span>
+                    <span class="text-emerald-400 font-mono-code">R$ 0 / mês</span>
+                  </div>
+                  <p class="text-zinc-400 text-[11px] mt-0.5">Suficiente para gerar 30 a 50 vídeos/dia para canais próprios.</p>
+                </div>
+                <div class="border-b border-zinc-800 pb-2.5">
+                  <div class="flex justify-between font-semibold text-white">
+                    <span>2. 1 VPS Dedicada (Hetzner)</span>
+                    <span class="text-cyan-400 font-mono-code">~R$ 120 / mês</span>
+                  </div>
+                  <p class="text-zinc-400 text-[11px] mt-0.5">8 vCPUs rodando fila 24/7 com custo fixo e previsível.</p>
+                </div>
+                <div>
+                  <div class="flex justify-between font-semibold text-white">
+                    <span>3. Remotion Lambda (AWS)</span>
+                    <span class="text-indigo-400 font-mono-code">$0,02 / render</span>
+                  </div>
+                  <p class="text-zinc-400 text-[11px] mt-0.5">Ativado somente quando o SaaS tiver dezenas de usuários simultâneos.</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-zinc-800 text-[10px] text-zinc-400">
+              <strong>Resultado:</strong> Margem líquida inicial superior a 80%.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Roadmap de Execução (30-Day Sprint) -->
+    <section class="slide flex-col justify-center min-h-[auto] sm:min-h-[480px]" data-slide="7" data-label="07 • Roadmap de 30 Dias">
+      <div class="mb-5">
+        <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-amber-950/70 text-amber-400 border border-amber-800/50 font-semibold tracking-[0.15em]">06. Roadmap de 30 Dias</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Do Protótipo ao Faturamento</h2>
+        <p class="text-zinc-400 text-xs sm:text-sm mt-1">Metas claras divididas por semanas sem perder tempo com overengineering.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5">
+        <!-- Sem 1 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-4 h-full flex flex-col justify-between border-t-2 border-cyan-400">
+            <div>
+              <div class="text-[10px] font-mono-code text-cyan-400 font-bold mb-1">SEMANA 1</div>
+              <h3 class="text-xs font-bold text-white mb-2">O Motor Perfeito</h3>
+              <ul class="text-[11px] text-zinc-300 space-y-1.5">
+                <li>• Física de mola nas bolhas</li>
+                <li>• Typing indicator orgânico</li>
+                <li>• Efeitos de áudio tátil</li>
+                <li>• <strong>Meta:</strong> 1 vídeo de 30s perfeito</li>
+              </ul>
+            </div>
+            <div class="mt-3 pt-2 border-t border-zinc-800 text-[9px] text-zinc-500 font-mono-code">Fase de Fundação</div>
+          </div>
+        </div>
+
+        <!-- Sem 2 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-4 h-full flex flex-col justify-between border-t-2 border-indigo-400">
+            <div>
+              <div class="text-[10px] font-mono-code text-indigo-400 font-bold mb-1">SEMANA 2</div>
+              <h3 class="text-xs font-bold text-white mb-2">Pipeline de 1 Clique</h3>
+              <ul class="text-[11px] text-zinc-300 space-y-1.5">
+                <li>• Script CLI que recebe JSON</li>
+                <li>• Automação de voz (TTS)</li>
+                <li>• Fusão áudio + fundo de vídeo</li>
+                <li>• <strong>Meta:</strong> Render via terminal</li>
+              </ul>
+            </div>
+            <div class="mt-3 pt-2 border-t border-zinc-800 text-[9px] text-zinc-500 font-mono-code">Fase de Automação</div>
+          </div>
+        </div>
+
+        <!-- Sem 3 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-4 h-full flex flex-col justify-between border-t-2 border-fuchsia-400">
+            <div>
+              <div class="text-[10px] font-mono-code text-fuchsia-400 font-bold mb-1">SEMANA 3</div>
+              <h3 class="text-xs font-bold text-white mb-2">Teste de Fogo (Mídia)</h3>
+              <ul class="text-[11px] text-zinc-300 space-y-1.5">
+                <li>• 30 vídeos produzidos</li>
+                <li>• Publicação em canais reais</li>
+                <li>• Medição de retenção</li>
+                <li>• <strong>Meta:</strong> Prova de tração</li>
+              </ul>
+            </div>
+            <div class="mt-3 pt-2 border-t border-zinc-800 text-[9px] text-zinc-500 font-mono-code">Fase de Validação</div>
+          </div>
+        </div>
+
+        <!-- Sem 4 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-4 h-full flex flex-col justify-between border-t-2 border-emerald-400">
+            <div>
+              <div class="text-[10px] font-mono-code text-emerald-400 font-bold mb-1">SEMANA 4</div>
+              <h3 class="text-xs font-bold text-white mb-2">Decisão de Escala</h3>
+              <ul class="text-[11px] text-zinc-300 space-y-1.5">
+                <li>• Escalar canais dark ou</li>
+                <li>• Montar tela de login do SaaS</li>
+                <li>• Primeiros clientes pagantes</li>
+                <li>• <strong>Meta:</strong> Caixa positivo</li>
+              </ul>
+            </div>
+            <div class="mt-3 pt-2 border-t border-zinc-800 text-[9px] text-zinc-500 font-mono-code">Fase de Expansão</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Divisão dos Sócios (The Founding Team) -->
+    <section class="slide flex-col justify-center min-h-[auto] sm:min-h-[480px]" data-slide="8" data-label="08 • Time Fundador">
+      <div class="mb-5">
+        <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-cyan-950/70 text-cyan-400 border border-cyan-800/50 font-semibold tracking-[0.15em]">07. O Time Fundador</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Divisão de Papéis Sem Conflito</h2>
+        <p class="text-zinc-400 text-xs sm:text-sm mt-1">Cada sócio é dono de uma ponta crítica da operação.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Sócio 1 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-5 h-full flex flex-col justify-between border-t-2 border-cyan-400">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-full bg-cyan-950 text-cyan-400 flex items-center justify-center font-bold border border-cyan-800 text-xs font-mono-code">
+                  A
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-white">Sócio A</h3>
+                  <p class="text-[10px] text-cyan-400 font-mono-code">Motor & Motion Design</p>
+                </div>
+              </div>
+              <ul class="text-[11px] text-zinc-300 space-y-2">
+                <li>• Implementar física de molas no Remotion.</li>
+                <li>• Ajustar timing de digitação e pausas.</li>
+                <li>• Design system das bolhas (iOS, WhatsApp).</li>
+                <li>• Sincronia de efeitos sonoros táteis.</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-zinc-800 text-[10px] text-zinc-500 font-mono-code">
+              Métrica: "O vídeo parece 100% humano?"
+            </div>
+          </div>
+        </div>
+
+        <!-- Sócio 2 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-5 h-full flex flex-col justify-between border-t-2 border-indigo-400">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-full bg-indigo-950 text-indigo-400 flex items-center justify-center font-bold border border-indigo-800 text-xs font-mono-code">
+                  B
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-white">Sócio B</h3>
+                  <p class="text-[10px] text-indigo-400 font-mono-code">Infra & Pipeline de Dados</p>
+                </div>
+              </div>
+              <ul class="text-[11px] text-zinc-300 space-y-2">
+                <li>• Configurar ambiente de render (Local/VPS).</li>
+                <li>• Criar fila assíncrona (BullMQ).</li>
+                <li>• Integrar APIs de voz e Cloudflare R2.</li>
+                <li>• Garantir render rápido e estável.</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-zinc-800 text-[10px] text-zinc-500 font-mono-code">
+              Métrica: "O pipeline gera MP4 sem falhas?"
+            </div>
+          </div>
+        </div>
+
+        <!-- Sócio 3 -->
+        <div class="bezel-outer">
+          <div class="bezel-inner p-5 h-full flex flex-col justify-between border-t-2 border-emerald-400">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold border border-emerald-800 text-xs font-mono-code">
+                  C
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-white">Sócio C</h3>
+                  <p class="text-[10px] text-emerald-400 font-mono-code">Conteúdo & Monetização</p>
+                </div>
+              </div>
+              <ul class="text-[11px] text-zinc-300 space-y-2">
+                <li>• Engenharia de roteiros e ganchos virais.</li>
+                <li>• Gestão de canais e testes de retenção.</li>
+                <li>• Prospecção de marcas para venda de criativos.</li>
+                <li>• Estratégia de precificação e lançamento.</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-zinc-800 text-[10px] text-zinc-500 font-mono-code">
+              Métrica: "Estamos gerando views e dinheiro?"
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: As Decisões na Mesa (Decision Time) -->
+    <section class="slide flex-col justify-center min-h-[auto] sm:min-h-[480px]" data-slide="9" data-label="09 • Hora da Decisão">
+      <div class="mb-5">
+        <span class="text-[10px] font-mono-code uppercase px-2.5 py-1 rounded-full bg-rose-950/70 text-rose-400 border border-rose-800/50 font-semibold tracking-[0.15em]">08. Hora da Decisão</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">O Que Decidimos Hoje Nesta Mesa</h2>
+        <p class="text-zinc-400 text-xs sm:text-sm mt-1">Marquem as decisões interativas abaixo durante a reunião para selar o plano.</p>
+      </div>
+
+      <div class="bezel-hero-outer">
+        <div class="bezel-hero-inner p-6 sm:p-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Bloco Decisão 1 -->
+            <div class="space-y-3">
+              <h3 class="text-xs font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                Decisão 1: Onde vamos processar os vídeos no início?
+              </h3>
+              <label class="flex items-start gap-3 p-3 rounded-xl bg-zinc-900/90 border border-zinc-800 hover:border-cyan-500/50 cursor-pointer transition">
+                <input type="radio" name="infra_choice" class="mt-1 accent-cyan-500">
+                <div class="text-xs">
+                  <span class="font-bold text-white block">Opção A: No PC Local dos Sócios (Custo R$ 0)</span>
+                  <span class="text-zinc-400 text-[11px]">Zero gasto de nuvem. Focado em gerar vídeos para nós mesmos.</span>
+                </div>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-xl bg-zinc-900/90 border border-zinc-800 hover:border-cyan-500/50 cursor-pointer transition">
+                <input type="radio" name="infra_choice" class="mt-1 accent-cyan-500" checked>
+                <div class="text-xs">
+                  <span class="font-bold text-white block">Opção B: Contratar 1 VPS Simples (~R$ 120/mês)</span>
+                  <span class="text-zinc-400 text-[11px]">Servidor central que todos os 3 sócios podem acionar via web/CLI.</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- Bloco Decisão 2 -->
+            <div class="space-y-3">
+              <h3 class="text-xs font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                Decisão 2: Qual a primeira ponta de monetização?
+              </h3>
+              <label class="flex items-start gap-3 p-3 rounded-xl bg-zinc-900/90 border border-zinc-800 hover:border-emerald-500/50 cursor-pointer transition">
+                <input type="radio" name="business_choice" class="mt-1 accent-emerald-500" checked>
+                <div class="text-xs">
+                  <span class="font-bold text-white block">Caminho 1: Mídia Própria & Venda de Criativos (Recomendado)</span>
+                  <span class="text-zinc-400 text-[11px]">Caixa rápido em 3 semanas sem custo de suporte ou dor de checkout.</span>
+                </div>
+              </label>
+              <label class="flex items-start gap-3 p-3 rounded-xl bg-zinc-900/90 border border-zinc-800 hover:border-emerald-500/50 cursor-pointer transition">
+                <input type="radio" name="business_choice" class="mt-1 accent-emerald-500">
+                <div class="text-xs">
+                  <span class="font-bold text-white block">Caminho 2: Construir o SaaS Direto para o Público</span>
+                  <span class="text-zinc-400 text-[11px]">Criar login, checkout e cobrar mensalidades em dólar desde o início.</span>
+                </div>
+              </label>
+            </div>
+
+          </div>
+
+          <!-- Alinhamento de Próximo Passo -->
+          <div class="mt-6 pt-5 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2 text-xs text-zinc-300">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <strong>Próximo Marco:</strong> Entregar o primeiro vídeo de 30 segundos no Remotion em 7 dias.
+            </div>
+            <button onclick="salvarDecisoes()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-cyan-500/20 active:scale-[0.98]">
+              Registrar Decisões da Equipe
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM BAR: Detached Floating Navigation Dock -->
+  <footer class="w-full max-w-5xl mx-auto px-4 pb-5 pt-2">
+    <div class="bezel-outer !p-1.5 !rounded-2xl">
+      <div class="bezel-inner !rounded-xl px-5 py-3 flex items-center justify-between">
+        
+        <div class="text-xs text-zinc-400 hidden sm:flex items-center gap-2">
+          <span>Navegação:</span>
+          <kbd class="px-1.5 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 font-mono-code text-[10px]">←</kbd>
+          <kbd class="px-1.5 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 font-mono-code text-[10px]">→</kbd>
+          <span class="text-zinc-600">ou</span>
+          <kbd class="px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 font-mono-code text-[10px]">Espaço</kbd>
+        </div>
+
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+          <button id="prevBtn" class="px-3.5 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs font-semibold text-zinc-300 hover:text-white transition flex items-center gap-1.5 disabled:opacity-30 disabled:pointer-events-none active:scale-95">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Anterior
+          </button>
+
+          <div class="flex gap-1.5" id="slideDots"></div>
+
+          <button id="nextBtn" class="px-4 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-xs font-semibold text-white transition flex items-center gap-1.5 shadow-md shadow-cyan-600/20 disabled:opacity-30 disabled:pointer-events-none active:scale-95">
+            Próximo
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 9;
+    const slides = document.querySelectorAll('.slide');
+    const currentSlideNumEl = document.getElementById('currentSlideNum');
+    const slideLabelTop = document.getElementById('slideLabelTop');
+    const progressBar = document.getElementById('progressBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const slideDotsContainer = document.getElementById('slideDots');
+
+    for (let i = 1; i <= totalSlides; i++) {
+      const dot = document.createElement('button');
+      dot.className = `h-1.5 rounded-full transition-all duration-300 ${i === 1 ? 'bg-cyan-400 w-5' : 'bg-zinc-800 hover:bg-zinc-600 w-1.5'}`;
+      dot.addEventListener('click', () => goToSlide(i));
+      slideDotsContainer.appendChild(dot);
+    }
+
+    function updateSlideUI() {
+      slides.forEach((slide, idx) => {
+        if (idx + 1 === currentSlide) {
+          slide.classList.add('active');
+          if (slideLabelTop && slide.dataset.label) {
+            slideLabelTop.textContent = slide.dataset.label;
+          }
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      currentSlideNumEl.textContent = currentSlide;
+      const progressPercent = (currentSlide / totalSlides) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      prevBtn.disabled = currentSlide === 1;
+      nextBtn.disabled = currentSlide === totalSlides;
+
+      const dots = slideDotsContainer.children;
+      for (let i = 0; i < dots.length; i++) {
+        if (i + 1 === currentSlide) {
+          dots[i].className = 'h-1.5 w-5 rounded-full bg-cyan-400 transition-all duration-300';
+        } else {
+          dots[i].className = 'h-1.5 w-1.5 rounded-full bg-zinc-800 hover:bg-zinc-600 transition-all duration-300';
+        }
+      }
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        updateSlideUI();
+      }
+    }
+
+    prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowLeft') {
+        goToSlide(currentSlide - 1);
+      }
+    });
+
+    // Touch Swipe Navigation for Mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 45) {
+        goToSlide(currentSlide + 1); // Swipe esquerda -> próximo
+      } else if (touchEndX > touchStartX + 45) {
+        goToSlide(currentSlide - 1); // Swipe direita -> anterior
+      }
+    }, { passive: true });
+
+    document.getElementById('toggleFullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    document.getElementById('copyPromptBtn').addEventListener('click', () => {
+      const markdownContent = `# TALKFLOW — Top Pre-Seed Founder Pitch Deck
+1. Capa: O Motor de Animação Conversacional de Alta Fidelidade
+2. O Problema: O Uncanny Valley das conversas digitais e a perda de retenção
+3. A Solução: Um Único Motor (Remotion/React) conectando Vídeos Shorts e Web Embeds
+4. Por que Agora: Explosão de diálogos no TikTok/Shorts + TTS Neural a $0,001 + Remotion Maduro
+5. Monetização: Via 1 Mídia Própria (Caixa rápido) e Via 2 SaaS em Dólar ($15 e $39/mês)
+6. Infraestrutura: Início com R$ 0 a R$ 120/mês (VPS) com margem bruta > 80%
+7. Roadmap: Sprint de 30 dias para o primeiro faturamento
+8. Time Fundador: Divisão clara em 3 pilares (Motion, Infra e Growth)
+9. Decisões na Mesa: Local vs VPS e Mídia Própria vs SaaS Direto`;
+
+      navigator.clipboard.writeText(markdownContent).then(() => {
+        const btn = document.getElementById('copyPromptBtn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✓ Copiado!';
+        btn.classList.add('bg-emerald-800/80', 'text-emerald-200');
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('bg-emerald-800/80', 'text-emerald-200');
+        }, 2000);
+      });
+    });
+
+    function salvarDecisoes() {
+      const infra = document.querySelector('input[name="infra_choice"]:checked')?.parentElement?.innerText?.trim();
+      const business = document.querySelector('input[name="business_choice"]:checked')?.parentElement?.innerText?.trim();
+      alert(`Decisões Registradas com Sucesso!\n\n• Infraestrutura: ${infra.split('\n')[0]}\n• Modelo: ${business.split('\n')[0]}\n\nBora para o Sprint de 7 dias!`);
+    }
+  </script>
+</body>
+</html>
