@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="googlebot" content="noindex, nofollow">
   <title>Proposta de Projeto: TalkFlow — Análise de Viabilidade & Negócio</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -90,6 +92,29 @@
   </style>
 </head>
 <body class="bg-[#050608] text-[#f4f4f6] antialiased min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200 bg-grid-pattern py-3 sm:py-5 px-3 sm:px-6">
+
+  <!-- PIN LOCK OVERLAY (Acesso Confidencial) -->
+  <div id="pinLockScreen" class="fixed inset-0 z-50 bg-[#050608]/95 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="bezel-hero-outer max-w-sm w-full">
+      <div class="bezel-hero-inner p-6 sm:p-7 text-center space-y-4">
+        <div class="w-10 h-10 mx-auto rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-fuchsia-500 flex items-center justify-center font-extrabold text-white text-sm shadow-md shadow-cyan-500/20">
+          TF
+        </div>
+        <div>
+          <span class="text-[9px] font-mono-code uppercase px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-800/60 font-semibold tracking-wider">Acesso Restrito</span>
+          <h2 class="text-base font-bold text-white mt-1.5">TalkFlow • Proposta Privada</h2>
+          <p class="text-[11px] text-zinc-400 mt-1">Este documento é confidencial e destinado exclusivamente aos sócios convidados.</p>
+        </div>
+        <div class="space-y-2">
+          <input type="password" id="pinInput" maxlength="12" placeholder="Digite o PIN de acesso" class="w-full text-center text-base tracking-widest font-mono-code bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-white placeholder-zinc-600 focus:outline-none focus:border-cyan-500 transition" />
+          <p id="pinError" class="text-[11px] text-red-400 hidden">PIN incorreto. Tente novamente.</p>
+        </div>
+        <button onclick="checkPinManual()" class="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition shadow-md shadow-cyan-600/20 active:scale-95">
+          Desbloquear Apresentação →
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- TOP BAR: Detached Floating Header -->
   <header class="w-full max-w-5xl mx-auto mb-2 sm:mb-4">
@@ -748,6 +773,53 @@
     function confirmarDecisao() {
       alert("Decisão Registrada!\n\nPróximo Passo Inegociável: Produzir 1 único vídeo de 30 segundos no Remotion até o 7º dia para validação visual.\n\nBora pra cima!");
     }
+
+    // Controle de Acesso Restrito por PIN / Link Direto
+    const CORRECT_PIN = "2026";
+    function checkPinAuto() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const hash = window.location.hash.replace('#', '');
+      if (
+        urlParams.get('pin') === CORRECT_PIN || 
+        urlParams.get('key') === CORRECT_PIN || 
+        hash === CORRECT_PIN || 
+        hash === 'acesso' || 
+        sessionStorage.getItem('tf_auth') === '1'
+      ) {
+        unlockPresentation();
+      }
+    }
+
+    function unlockPresentation() {
+      const screen = document.getElementById('pinLockScreen');
+      if (screen) {
+        screen.style.opacity = '0';
+        screen.style.pointerEvents = 'none';
+        setTimeout(() => { screen.style.display = 'none'; }, 300);
+      }
+      sessionStorage.setItem('tf_auth', '1');
+    }
+
+    function checkPinManual() {
+      const input = document.getElementById('pinInput');
+      const error = document.getElementById('pinError');
+      if (input && input.value.trim() === CORRECT_PIN) {
+        if (error) error.classList.add('hidden');
+        unlockPresentation();
+      } else {
+        if (error) error.classList.remove('hidden');
+        if (input) {
+          input.classList.add('border-red-500');
+          setTimeout(() => input.classList.remove('border-red-500'), 1500);
+        }
+      }
+    }
+
+    document.getElementById('pinInput')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') checkPinManual();
+    });
+
+    checkPinAuto();
   </script>
 </body>
 </html>
